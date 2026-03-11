@@ -5,9 +5,9 @@
     "https://stac-extensions.github.io/embeddings/v1.0.0/schema.json"
   ],
   "type": "Collection",
-  "id": "prithvi-s2l2a-patch-2024",
-  "title": "Prithvi Sentinel-2 Patch Embeddings (2024)",
-  "description": "Patch embeddings generated from Sentinel-2 L2A scenes using a Prithvi encoder.",
+  "id": "prithvi-s2l2a-chip-2024",
+  "title": "Prithvi Sentinel-2 Chip Embeddings (2024)",
+  "description": "Chip embeddings generated from Sentinel-2 L2A scenes using a Prithvi encoder.",
   "license": "CC-BY-4.0",
   "extent": {
     "spatial": {
@@ -30,16 +30,13 @@
     }
   },
   "emb:version": "1.0.0",
-  "emb:type": "patch",
+  "emb:type": "chip",
   "emb:dimensions": 768,
   "emb:dtype": "float32",
-  "emb:shape": [
-    768
-  ],
   "emb:spatial_resolution": 10,
-  "emb:patch_layout": {
+  "emb:chip_layout": {
     "layout_type": "regular_grid",
-    "patch_size": [
+    "chip_size": [
       16,
       16
     ],
@@ -60,11 +57,10 @@
     "classification",
     "change_detection"
   ],
-  "emb:spatial_coverage": "global",
   "links": [
     {
       "rel": "self",
-      "href": "https://example.org/stac/collections/prithvi-s2l2a-patch-2024"
+      "href": "https://example.org/stac/collections/prithvi-s2l2a-chip-2024"
     },
     {
       "rel": "root",
@@ -72,7 +68,7 @@
     },
     {
       "rel": "item",
-      "href": "https://example.org/stac/collections/prithvi-s2l2a-patch-2024/items/tile-12txm-2024-05-01"
+      "href": "https://example.org/stac/collections/prithvi-s2l2a-chip-2024/items/tile-12txm-2024-05-01"
     },
     {
       "rel": "emb:model",
@@ -95,12 +91,11 @@
   ],
   "assets": {
     "manifest": {
-      "href": "https://example.org/stac/collections/prithvi-s2l2a-patch-2024/manifest.parquet",
+      "href": "https://example.org/stac/collections/prithvi-s2l2a-chip-2024/manifest.parquet",
       "type": "application/vnd.apache.parquet",
       "roles": [
         "metadata"
-      ],
-      "emb:crs": "EPSG:4326"
+      ]
     }
   },
   "item_assets": {
@@ -109,8 +104,7 @@
       "roles": [
         "data"
       ],
-      "title": "Patch embedding vectors",
-      "emb:crs": "EPSG:4326",
+      "title": "Chip embedding vectors",
       "emb:quantization": {
         "method": "none",
         "original_dtype": "float32"
@@ -119,7 +113,7 @@
   },
   "summaries": {
     "emb:type": [
-      "patch"
+      "chip"
     ],
     "emb:dimensions": [
       768

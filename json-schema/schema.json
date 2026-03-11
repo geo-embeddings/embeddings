@@ -148,17 +148,9 @@
       "$ref": "https://schemas.stacspec.org/v1.0.0/item-spec/json-schema/item.json#/definitions/link"
     },
     "processing_expression": {
-      "description": "Processing expression. SHOULD follow the STAC MLM processing expression format.",
-      "oneOf": [
-        {
-          "type": "object"
-        },
-        {
-          "type": "string"
-        }
-      ]
+      "$ref": "https://stac-extensions.github.io/processing/v1.1.0/schema.json#/definitions/fields/properties/processing:expression"
     },
-    "patch_layout": {
+    "chip_layout": {
       "type": "object",
       "required": [
         "layout_type"
@@ -172,7 +164,7 @@
             "named_grid"
           ]
         },
-        "patch_size": {
+        "chip_size": {
           "oneOf": [
             {
               "type": "integer",
@@ -212,7 +204,7 @@
         "grid_definition": {
           "$ref": "#/definitions/stac_link_object"
         },
-        "patch_geometries": {
+        "chip_geometries": {
           "$ref": "#/definitions/stac_link_object"
         }
       },
@@ -288,7 +280,7 @@
           "type": "string",
           "enum": [
             "pixel",
-            "patch"
+            "chip"
           ]
         },
         "emb:dimensions": {
@@ -298,19 +290,11 @@
         "emb:dtype": {
           "type": "string"
         },
-        "emb:shape": {
-          "type": "array",
-          "items": {
-            "type": "integer",
-            "minimum": 1
-          },
-          "minItems": 1
-        },
         "emb:spatial_resolution": {
           "type": "number"
         },
-        "emb:patch_layout": {
-          "$ref": "#/definitions/patch_layout"
+        "emb:chip_layout": {
+          "$ref": "#/definitions/chip_layout"
         },
         "emb:temporal_resolution": {
           "type": "string"
@@ -320,9 +304,6 @@
           "items": {
             "type": "string"
           }
-        },
-        "emb:spatial_coverage": {
-          "type": "string"
         },
         "emb:uncertainty": {
           "$ref": "#/definitions/uncertainty"
@@ -342,15 +323,6 @@
         "emb:inference_datetime": {
           "type": "string",
           "format": "date-time"
-        },
-        "emb:source_data": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/stac_link_object"
-          }
-        },
-        "emb:source_data_hash": {
-          "type": "string"
         },
         "emb:processing_baseline": {
           "type": "string"
@@ -384,9 +356,6 @@
       "properties": {
         "emb:quantization": {
           "$ref": "#/definitions/quantization"
-        },
-        "emb:crs": {
-          "type": "string"
         }
       },
       "patternProperties": {
@@ -400,11 +369,9 @@
         "emb:type": {},
         "emb:dimensions": {},
         "emb:dtype": {},
-        "emb:shape": {},
         "emb:spatial_resolution": {},
         "emb:temporal_resolution": {},
         "emb:fit_for_use": {},
-        "emb:spatial_coverage": {},
         "emb:uncertainty": {}
       },
       "patternProperties": {
