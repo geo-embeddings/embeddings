@@ -71,6 +71,11 @@ Source imagery used to produce an item's embeddings SHOULD be referenced via a l
 
 ### Asset Fields
 
+Items **MUST** include an asset with the key `"embeddings"` in their `assets` object.
+This asset contains the actual embedding data (e.g., a GeoParquet file, COG, or Zarr store).
+Collections **SHOULD** define an `"embeddings"` entry in `item_assets` to describe the expected
+embedding asset for each item.
+
 | Field Name | Type | Description |
 | --- | --- | --- |
 | emb:quantization | [Quantization Object](#quantization-object) | Quantization details for encoded embeddings. |
