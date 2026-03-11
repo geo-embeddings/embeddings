@@ -1,12 +1,15 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://stac-extensions.github.io/template/v1.0.0/schema.json#",
-  "title": "Template Extension",
-  "description": "STAC Template Extension for STAC Items and STAC Collections.",
+  "$id": "https://stac-extensions.github.io/embeddings/v1.0.0/schema.json#",
+  "title": "Embedding Extension",
+  "description": "STAC Embedding Extension for STAC Items and STAC Collections.",
   "oneOf": [
     {
-      "$comment": "This is the schema for STAC Items. Remove this object if this extension only applies to Collections.",
+      "title": "Embedding extension on STAC Items",
       "allOf": [
+        {
+          "$ref": "https://schemas.stacspec.org/v1.0.0/item-spec/json-schema/item.json"
+        },
         {
           "$ref": "#/definitions/stac_extensions"
         },
@@ -14,31 +17,19 @@
           "type": "object",
           "required": [
             "type",
-            "properties",
-            "assets"
+            "properties"
           ],
           "properties": {
             "type": {
               "const": "Feature"
             },
             "properties": {
-              "allOf": [
-                {
-                  "$comment": "Require fields here for Item Properties.",
-                  "required": [
-                    "template:new_field"
-                  ]
-                },
-                {
-                  "$ref": "#/definitions/fields"
-                }
-              ]
+              "$ref": "#/definitions/item_properties_fields"
             },
             "assets": {
-              "$comment": "This validates the fields in Item Assets, but does not require them.",
               "type": "object",
               "additionalProperties": {
-                "$ref": "#/definitions/fields"
+                "$ref": "#/definitions/asset_fields"
               }
             }
           }
@@ -46,98 +37,94 @@
       ]
     },
     {
-      "$comment": "This is the schema for STAC Collections.",
-      "type": "object",
+      "title": "Embedding extension on STAC Collections",
       "allOf": [
         {
+          "$ref": "https://schemas.stacspec.org/v1.0.0/collection-spec/json-schema/collection.json"
+        },
+        {
+          "$ref": "#/definitions/stac_extensions"
+        },
+        {
+          "type": "object",
           "required": [
-            "type"
+            "type",
+            "emb:version",
+            "emb:type",
+            "emb:dimensions",
+            "emb:dtype",
+            "links"
           ],
           "properties": {
             "type": {
               "const": "Collection"
-            }
-          }
-        },
-        {
-          "$ref": "#/definitions/stac_extensions"
-        }
-      ],
-      "anyOf": [
-        {
-          "$comment": "This is the schema for the top-level fields in a Collection. Remove this if this extension does not define top-level fields for Collections.",
-          "allOf": [
-            {
-              "$comment": "Require fields here for Collections (top-level).",
-              "required": [
-                "template:new_field"
+            },
+            "links": {
+              "type": "array",
+              "allOf": [
+                {
+                  "contains": {
+                    "allOf": [
+                      {
+                        "$ref": "#/definitions/stac_link_object"
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "rel": {
+                            "const": "emb:model"
+                          }
+                        },
+                        "required": [
+                          "rel"
+                        ]
+                      }
+                    ]
+                  }
+                },
+                {
+                  "contains": {
+                    "allOf": [
+                      {
+                        "$ref": "#/definitions/stac_link_object"
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "rel": {
+                            "const": "emb:source-data"
+                          }
+                        },
+                        "required": [
+                          "rel"
+                        ]
+                      }
+                    ]
+                  }
+                }
               ]
             },
-            {
-              "$ref": "#/definitions/fields"
-            }
-          ]
-        },
-        {
-          "$comment": "This validates the fields in Collection Assets, but does not require them.",
-          "required": [
-            "assets"
-          ],
-          "properties": {
             "assets": {
               "type": "object",
-              "not": {
-                "additionalProperties": {
-                  "not": {
-                    "allOf": [
-                      {
-                        "$ref": "#/definitions/require_any_field"
-                      },
-                      {
-                        "$ref": "#/definitions/fields"
-                      }
-                    ]
-                  }
-                }
+              "additionalProperties": {
+                "$ref": "#/definitions/asset_fields"
               }
-            }
-          }
-        },
-        {
-          "$comment": "This is the schema for the fields in Item Asset Definitions. It doesn't require any fields.",
-          "required": [
-            "item_assets"
-          ],
-          "properties": {
+            },
             "item_assets": {
               "type": "object",
-              "not": {
-                "additionalProperties": {
-                  "not": {
-                    "allOf": [
-                      {
-                        "$ref": "#/definitions/require_any_field"
-                      },
-                      {
-                        "$ref": "#/definitions/fields"
-                      }
-                    ]
-                  }
-                }
+              "additionalProperties": {
+                "$ref": "#/definitions/asset_fields"
               }
-            }
-          }
-        },
-        {
-          "$comment": "This is the schema for the fields in Summaries. By default, only checks the existence of the properties, but not the schema of the summaries.",
-          "required": [
-            "summaries"
-          ],
-          "properties": {
+            },
             "summaries": {
-              "$ref": "#/definitions/require_any_field"
+              "$ref": "#/definitions/summaries_fields"
             }
-          }
+          },
+          "allOf": [
+            {
+              "$ref": "#/definitions/collection_fields"
+            }
+          ]
         }
       ]
     }
@@ -152,56 +139,276 @@
         "stac_extensions": {
           "type": "array",
           "contains": {
-            "const": "https://stac-extensions.github.io/template/v1.0.0/schema.json"
+            "const": "https://stac-extensions.github.io/embeddings/v1.0.0/schema.json"
           }
         }
       }
     },
-    "require_any_field": {
-      "$comment": "Please list all fields here so that we can force the existence of one of them in other parts of the schemas.",
-      "anyOf": [
-        {"required": ["template:new_field"]},
-        {"required": ["template:xyz"]},
-        {"required": ["template:another_one"]}
+    "stac_link_object": {
+      "$ref": "https://schemas.stacspec.org/v1.0.0/item-spec/json-schema/item.json#/definitions/link"
+    },
+    "processing_expression": {
+      "description": "Processing expression. SHOULD follow the STAC MLM processing expression format.",
+      "oneOf": [
+        {
+          "type": "object"
+        },
+        {
+          "type": "string"
+        }
       ]
     },
-    "fields": {
-      "$comment": "Add your new fields here. Don't require them here, do that above in the corresponding schema.",
+    "patch_layout": {
       "type": "object",
+      "required": [
+        "layout_type"
+      ],
       "properties": {
-        "template:new_field": {
+        "layout_type": {
+          "type": "string",
+          "enum": [
+            "regular_grid",
+            "variable_grid",
+            "named_grid"
+          ]
+        },
+        "patch_size": {
+          "oneOf": [
+            {
+              "type": "integer",
+              "minimum": 1
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "minItems": 2,
+              "maxItems": 2
+            }
+          ]
+        },
+        "stride": {
+          "oneOf": [
+            {
+              "type": "integer",
+              "minimum": 1
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "minItems": 2,
+              "maxItems": 2
+            }
+          ]
+        },
+        "grid_id": {
           "type": "string"
         },
-        "template:xyz": {
-          "type": "object",
-          "required": [
-            "x",
-            "y",
-            "z"
-          ],
-          "properties": {
-            "x": {
-              "type": "number"
-            },
-            "y": {
-              "type": "number"
-            },
-            "z": {
-              "type": "number"
-            }
-          }
+        "grid_definition": {
+          "$ref": "#/definitions/stac_link_object"
         },
-        "template:another_one": {
-          "type": "array",
-          "items": {
-            "type": "number"
-          }
+        "patch_geometries": {
+          "$ref": "#/definitions/stac_link_object"
         }
       },
       "patternProperties": {
-        "^(?!template:)": {
-          "$comment": "Above, change `template` to the prefix of this extension"
+        "^(?!emb:)": {}
+      },
+      "additionalProperties": false
+    },
+    "quantization": {
+      "type": "object",
+      "required": [
+        "method",
+        "original_dtype"
+      ],
+      "properties": {
+        "method": {
+          "type": "string"
+        },
+        "original_dtype": {
+          "type": "string"
+        },
+        "scale": {
+          "oneOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "number"
+              }
+            }
+          ]
+        },
+        "offset": {
+          "oneOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "number"
+              }
+            }
+          ]
         }
+      },
+      "additionalProperties": false
+    },
+    "uncertainty": {
+      "type": "object",
+      "properties": {
+        "method": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "asset": {
+          "$ref": "#/definitions/stac_link_object"
+        }
+      },
+      "additionalProperties": false
+    },
+    "collection_fields": {
+      "type": "object",
+      "properties": {
+        "emb:version": {
+          "type": "string"
+        },
+        "emb:type": {
+          "type": "string",
+          "enum": [
+            "pixel",
+            "patch"
+          ]
+        },
+        "emb:dimensions": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "emb:dtype": {
+          "type": "string"
+        },
+        "emb:shape": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "minItems": 1
+        },
+        "emb:spatial_resolution": {
+          "type": "number"
+        },
+        "emb:patch_layout": {
+          "$ref": "#/definitions/patch_layout"
+        },
+        "emb:temporal_resolution": {
+          "type": "string"
+        },
+        "emb:fit_for_use": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "emb:spatial_coverage": {
+          "type": "string"
+        },
+        "emb:uncertainty": {
+          "$ref": "#/definitions/uncertainty"
+        }
+      },
+      "patternProperties": {
+        "^(?!emb:)": {}
+      },
+      "additionalProperties": false
+    },
+    "item_properties_fields": {
+      "type": "object",
+      "properties": {
+        "emb:runtime_parameters": {
+          "type": "object"
+        },
+        "emb:inference_datetime": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "emb:source_data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/stac_link_object"
+          }
+        },
+        "emb:source_data_hash": {
+          "type": "string"
+        },
+        "emb:processing_baseline": {
+          "type": "string"
+        },
+        "emb:preprocessing": {
+          "$ref": "#/definitions/processing_expression"
+        },
+        "emb:postprocessing": {
+          "$ref": "#/definitions/processing_expression"
+        },
+        "emb:fit_for_use": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "emb:spatial_coverage": {
+          "type": "string"
+        },
+        "emb:uncertainty": {
+          "$ref": "#/definitions/uncertainty"
+        }
+      },
+      "patternProperties": {
+        "^(?!emb:)": {}
+      },
+      "additionalProperties": false
+    },
+    "asset_fields": {
+      "type": "object",
+      "properties": {
+        "emb:quantization": {
+          "$ref": "#/definitions/quantization"
+        },
+        "emb:crs": {
+          "type": "string"
+        }
+      },
+      "patternProperties": {
+        "^(?!emb:)": {}
+      },
+      "additionalProperties": false
+    },
+    "summaries_fields": {
+      "type": "object",
+      "properties": {
+        "emb:type": {},
+        "emb:dimensions": {},
+        "emb:dtype": {},
+        "emb:shape": {},
+        "emb:spatial_resolution": {},
+        "emb:temporal_resolution": {},
+        "emb:fit_for_use": {},
+        "emb:spatial_coverage": {},
+        "emb:uncertainty": {}
+      },
+      "patternProperties": {
+        "^(?!emb:)": {}
       },
       "additionalProperties": false
     }
