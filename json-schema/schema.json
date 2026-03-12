@@ -341,6 +341,9 @@
         },
         "emb:uncertainty": {
           "$ref": "#/definitions/uncertainty"
+        },
+        "emb:quantization": {
+          "$ref": "#/definitions/quantization"
         }
       },
       "patternProperties": {
@@ -350,11 +353,7 @@
     },
     "asset_fields": {
       "type": "object",
-      "properties": {
-        "emb:quantization": {
-          "$ref": "#/definitions/quantization"
-        }
-      },
+      "properties": {},
       "patternProperties": {
         "^(?!emb:)": {}
       },

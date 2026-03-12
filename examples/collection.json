@@ -103,11 +103,7 @@
       "roles": [
         "data"
       ],
-      "title": "Chip embedding vectors",
-      "emb:quantization": {
-        "method": "none",
-        "original_dtype": "float32"
-      }
+      "title": "Chip embedding vectors"
     }
   },
   "summaries": {

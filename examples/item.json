@@ -60,6 +60,12 @@
     "emb:postprocessing": {
       "format": "gdal-calc",
       "expression": "l2_normalize"
+    },
+    "emb:quantization": {
+      "method": "linear",
+      "original_dtype": "float32",
+      "scale": 0.02,
+      "offset": -1.2
     }
   },
   "links": [
@@ -88,13 +94,7 @@
       "type": "application/vnd.apache.parquet",
       "roles": [
         "data"
-      ],
-      "emb:quantization": {
-        "method": "linear",
-        "original_dtype": "float32",
-        "scale": 0.02,
-        "offset": -1.2
-      }
+      ]
     }
   }
 }

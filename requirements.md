@@ -105,6 +105,7 @@ An item represents a single spatiotemporal partition of the collection -- a tile
 | emb:processing_baseline | string             | No       | Source data processing baseline version (e.g., Sentinel-2 processing baseline)                                                                              |
 | emb:preprocessing       | Processing Object  | No       | How source data was prepared before model inference. Uses the [STAC Processing extension](https://github.com/stac-extensions/processing) expression format. |
 | emb:postprocessing      | Processing Object  | No       | Transformations applied to raw model output (dimension reduction, normalization, quantization pipeline). Uses the STAC Processing extension expression format. |
+| emb:quantization        | Quantization Object| No       | Quantization details, if the embeddings have been quantized from their original dtype                          |
 
 
 Source imagery used to produce an item's embeddings SHOULD be referenced via a link with `rel: "emb:source-data"` in the item's `links` array (see Item Links below).
@@ -131,11 +132,7 @@ An asset is the actual data file: a Zarr store, a GeoParquet file, a COG, etc. A
 
 ### Asset Fields
 
-
-| Field Name       | Type                | Required | Description                                                                                                    |
-| ---------------- | ------------------- | -------- | -------------------------------------------------------------------------------------------------------------- |
-| emb:quantization | Quantization Object | No       | Quantization details, if the embeddings have been quantized from their original dtype                          |
-
+No extension-specific fields are defined on assets.
 
 The coordinate reference system of an asset SHOULD be embedded in the data file itself (e.g., using the [proj extension](https://github.com/stac-extensions/projection) or native CRS metadata in GeoParquet/Zarr), not only in STAC metadata.
 
