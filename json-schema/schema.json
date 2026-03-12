@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://stac-extensions.github.io/embeddings/v1.0.0/schema.json#",
+  "$id": "https://stac-extensions.github.io/embeddings/v0.0.1/schema.json#",
   "title": "Embedding Extension",
   "description": "STAC Embedding Extension for STAC Items and STAC Collections.",
   "oneOf": [
@@ -17,7 +17,8 @@
           "type": "object",
           "required": [
             "type",
-            "properties"
+            "properties",
+            "assets"
           ],
           "properties": {
             "type": {
@@ -28,6 +29,9 @@
             },
             "assets": {
               "type": "object",
+              "required": [
+                "embeddings"
+              ],
               "additionalProperties": {
                 "$ref": "#/definitions/asset_fields"
               }
@@ -49,7 +53,6 @@
           "type": "object",
           "required": [
             "type",
-            "emb:version",
             "emb:type",
             "emb:dimensions",
             "emb:dtype",
@@ -139,7 +142,7 @@
         "stac_extensions": {
           "type": "array",
           "contains": {
-            "const": "https://stac-extensions.github.io/embeddings/v1.0.0/schema.json"
+            "const": "https://stac-extensions.github.io/embeddings/v0.0.1/schema.json"
           }
         }
       }
@@ -148,17 +151,9 @@
       "$ref": "https://schemas.stacspec.org/v1.0.0/item-spec/json-schema/item.json#/definitions/link"
     },
     "processing_expression": {
-      "description": "Processing expression. SHOULD follow the STAC MLM processing expression format.",
-      "oneOf": [
-        {
-          "type": "object"
-        },
-        {
-          "type": "string"
-        }
-      ]
+      "$ref": "https://stac-extensions.github.io/processing/v1.1.0/schema.json#/definitions/fields/properties/processing:expression"
     },
-    "patch_layout": {
+    "chip_layout": {
       "type": "object",
       "required": [
         "layout_type"
@@ -172,7 +167,7 @@
             "named_grid"
           ]
         },
-        "patch_size": {
+        "chip_size": {
           "oneOf": [
             {
               "type": "integer",
@@ -210,9 +205,6 @@
           "type": "string"
         },
         "grid_definition": {
-          "$ref": "#/definitions/stac_link_object"
-        },
-        "patch_geometries": {
           "$ref": "#/definitions/stac_link_object"
         }
       },
@@ -281,14 +273,11 @@
     "collection_fields": {
       "type": "object",
       "properties": {
-        "emb:version": {
-          "type": "string"
-        },
         "emb:type": {
           "type": "string",
           "enum": [
             "pixel",
-            "patch"
+            "chip"
           ]
         },
         "emb:dimensions": {
@@ -298,19 +287,11 @@
         "emb:dtype": {
           "type": "string"
         },
-        "emb:shape": {
-          "type": "array",
-          "items": {
-            "type": "integer",
-            "minimum": 1
-          },
-          "minItems": 1
-        },
         "emb:spatial_resolution": {
           "type": "number"
         },
-        "emb:patch_layout": {
-          "$ref": "#/definitions/patch_layout"
+        "emb:chip_layout": {
+          "$ref": "#/definitions/chip_layout"
         },
         "emb:temporal_resolution": {
           "type": "string"
@@ -320,9 +301,6 @@
           "items": {
             "type": "string"
           }
-        },
-        "emb:spatial_coverage": {
-          "type": "string"
         },
         "emb:uncertainty": {
           "$ref": "#/definitions/uncertainty"
@@ -342,15 +320,6 @@
         "emb:inference_datetime": {
           "type": "string",
           "format": "date-time"
-        },
-        "emb:source_data": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/stac_link_object"
-          }
-        },
-        "emb:source_data_hash": {
-          "type": "string"
         },
         "emb:processing_baseline": {
           "type": "string"
@@ -372,6 +341,9 @@
         },
         "emb:uncertainty": {
           "$ref": "#/definitions/uncertainty"
+        },
+        "emb:quantization": {
+          "$ref": "#/definitions/quantization"
         }
       },
       "patternProperties": {
@@ -381,14 +353,7 @@
     },
     "asset_fields": {
       "type": "object",
-      "properties": {
-        "emb:quantization": {
-          "$ref": "#/definitions/quantization"
-        },
-        "emb:crs": {
-          "type": "string"
-        }
-      },
+      "properties": {},
       "patternProperties": {
         "^(?!emb:)": {}
       },
@@ -400,11 +365,9 @@
         "emb:type": {},
         "emb:dimensions": {},
         "emb:dtype": {},
-        "emb:shape": {},
         "emb:spatial_resolution": {},
         "emb:temporal_resolution": {},
         "emb:fit_for_use": {},
-        "emb:spatial_coverage": {},
         "emb:uncertainty": {}
       },
       "patternProperties": {
