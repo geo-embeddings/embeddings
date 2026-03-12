@@ -66,6 +66,7 @@ The extension fields can be used in:
 | emb:preprocessing | [Processing Expression](https://github.com/stac-extensions/processing) | Preprocessing applied to source data before inference. Uses the STAC Processing extension expression format. |
 | emb:postprocessing | [Processing Expression](https://github.com/stac-extensions/processing) | Postprocessing applied to raw model output. Uses the STAC Processing extension expression format. |
 | emb:uncertainty | [Uncertainty Object](#uncertainty-object) | Optional uncertainty metadata. |
+| emb:quantization | [Quantization Object](#quantization-object) | Quantization details for encoded embeddings. |
 
 Source imagery used to produce an item's embeddings SHOULD be referenced via a link with `rel: "emb:source-data"` in the item's `links` array (see [Relation Types](#relation-types)).
 
@@ -76,9 +77,7 @@ This asset contains the actual embedding data (e.g., a GeoParquet file, COG, or 
 Collections **SHOULD** define an `"embeddings"` entry in `item_assets` to describe the expected
 embedding asset for each item.
 
-| Field Name | Type | Description |
-| --- | --- | --- |
-| emb:quantization | [Quantization Object](#quantization-object) | Quantization details for encoded embeddings. |
+No extension-specific fields are defined on assets.
 
 ### Chip Layout Object
 
