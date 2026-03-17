@@ -251,6 +251,9 @@
               }
             }
           ]
+        },
+        "link": {
+          "$ref": "#/definitions/stac_link_object"
         }
       },
       "additionalProperties": false

@@ -150,6 +150,7 @@ If embeddings have been quantized (e.g., from `float32` to `int8`), the quantiza
 | original_dtype | string            | **Yes**  | The data type before quantization (e.g., `float32`). Uses the same [data type values](https://github.com/radiantearth/stac-spec/blob/master/commons/common-metadata.md#data-types) as `data_type`. |
 | scale          | number or number] | No       | Dequantization scale factor(s)                                                               |
 | offset         | number or number] | No       | Dequantization offset(s)                                                                     |
+| link           | Link Object       | No       | Link to a document describing the quantization method in detail. Recommended when the method cannot be fully captured by `scale` and `offset` alone. |
 
 
 ---
