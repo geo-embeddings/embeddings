@@ -66,8 +66,12 @@
       "method": "linear",
       "original_dtype": "float32",
       "quantized_dtype": "int8",
-      "scale": 0.02,
-      "offset": -1.2,
+      "scale": [
+        0.02
+      ],
+      "offset": [
+        -1.2
+      ],
       "link": {
         "rel": "about",
         "href": "https://example.org/docs/linear-quantization-method",

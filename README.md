@@ -96,8 +96,8 @@ No extension-specific fields are defined on assets.
 | Field Name | Type | Description |
 | --- | --- | --- |
 | layout_type | string enum | **REQUIRED**. One of `regular_grid`, `variable_grid`, `named_grid`. |
-| chip_size | integer or \[integer] | Chip size in pixels (`[height, width]` or scalar square size). |
-| stride | integer or \[integer] | Step between the origins of neighboring chips in pixels (`[row_stride, col_stride]` or scalar for square stride). When `stride < chip_size`, chips overlap; when `stride == chip_size`, chips tile without overlap. |
+| chip_size | \[integer] | Chip size in pixels as `[height, width]`. |
+| stride | \[integer] | Step between the origins of neighboring chips in pixels as `[row_stride, col_stride]`. When `stride < chip_size`, chips overlap; when `stride == chip_size`, chips tile without overlap. |
 | grid_id | string | Identifier of the tiling/grid system. |
 | grid_definition | Link Object | Link to grid/tiling definition. |
 
@@ -108,8 +108,8 @@ No extension-specific fields are defined on assets.
 | method | string | **REQUIRED**. Quantization method. |
 | original_dtype | string | **REQUIRED**. Original data type before quantization. Uses the same [data type values](https://github.com/radiantearth/stac-spec/blob/master/commons/common-metadata.md#data-types) as `data_type`. |
 | quantized_dtype | string | Data type after quantization. Uses the same [data type values](https://github.com/radiantearth/stac-spec/blob/master/commons/common-metadata.md#data-types) as `data_type`. |
-| scale | number or \[number] | Dequantization scale factor(s). |
-| offset | number or \[number] | Dequantization offset(s). |
+| scale | \[number] | Dequantization scale factor(s). |
+| offset | \[number] | Dequantization offset(s). |
 | link | [Link Object](https://github.com/radiantearth/stac-spec/blob/master/commons/links.md) | Link to a document describing the quantization method in detail. Recommended when the method cannot be fully captured by `scale` and `offset` alone. |
 
 ### Uncertainty Object

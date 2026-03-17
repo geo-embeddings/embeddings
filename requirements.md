@@ -69,8 +69,8 @@ This object records how chip embeddings were extracted. It supports both regular
 | Field Name       | Type                | Required | Description                                                                                                                                                                   |
 | ---------------- | ------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | layout_type      | string enum         | **Yes**  | Chip layout strategy: `regular_grid`, `variable_grid`, or `named_grid`                                                                                                        |
-| chip_size        | integer or integer] | No       | Chip size in pixels (single value for square chips or `[height, width]`). SHOULD be provided for `regular_grid`; MAY be omitted when chip geometry is externally defined.    |
-| stride           | integer or integer] | No       | Step between neighboring chips in pixels. For `regular_grid`, if `stride < chip_size`, chips overlap. Not required for variable or externally defined grids.                 |
+| chip_size        | \[integer]           | No       | Chip size in pixels as `[height, width]`. SHOULD be provided for `regular_grid`; MAY be omitted when chip geometry is externally defined.    |
+| stride           | \[integer]           | No       | Step between neighboring chips in pixels as `[row_stride, col_stride]`. For `regular_grid`, if `stride < chip_size`, chips overlap. Not required for variable or externally defined grids. |
 | grid_id          | string              | No       | Identifier of the tiling/grid system used (e.g., a MajorTom grid name/version)                                                                                                |
 | grid_definition  | Link Object         | No       | Link to a formal grid specification, lookup table, or tiling definition used to generate chip footprints                                                                      |
 
@@ -149,8 +149,8 @@ If embeddings have been quantized (e.g., from `float32` to `int8`), the quantiza
 | method          | string            | **Yes**  | Quantization method: `none`, `linear`, `sqrt_scale`, `quantization_aware_training`, or other |
 | original_dtype  | string            | **Yes**  | The data type before quantization (e.g., `float32`). Uses the same [data type values](https://github.com/radiantearth/stac-spec/blob/master/commons/common-metadata.md#data-types) as `data_type`. |
 | quantized_dtype | string            | No       | The data type after quantization (e.g., `int8`). Uses the same [data type values](https://github.com/radiantearth/stac-spec/blob/master/commons/common-metadata.md#data-types) as `data_type`. |
-| scale           | number or number] | No       | Dequantization scale factor(s)                                                               |
-| offset          | number or number] | No       | Dequantization offset(s)                                                                     |
+| scale           | \[number]          | No       | Dequantization scale factor(s)                                                               |
+| offset          | \[number]          | No       | Dequantization offset(s)                                                                     |
 | link            | Link Object       | No       | Link to a document describing the quantization method in detail. Recommended when the method cannot be fully captured by `scale` and `offset` alone. |
 
 

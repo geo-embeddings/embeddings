@@ -168,38 +168,22 @@
           ]
         },
         "chip_size": {
-          "oneOf": [
-            {
-              "type": "integer",
-              "minimum": 1
-            },
-            {
-              "type": "array",
-              "items": {
-                "type": "integer",
-                "minimum": 1
-              },
-              "minItems": 2,
-              "maxItems": 2
-            }
-          ]
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "minItems": 2,
+          "maxItems": 2
         },
         "stride": {
-          "oneOf": [
-            {
-              "type": "integer",
-              "minimum": 1
-            },
-            {
-              "type": "array",
-              "items": {
-                "type": "integer",
-                "minimum": 1
-              },
-              "minItems": 2,
-              "maxItems": 2
-            }
-          ]
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "minItems": 2,
+          "maxItems": 2
         },
         "grid_id": {
           "type": "string"
@@ -227,30 +211,16 @@
           "type": "string"
         },
         "scale": {
-          "oneOf": [
-            {
-              "type": "number"
-            },
-            {
-              "type": "array",
-              "items": {
-                "type": "number"
-              }
-            }
-          ]
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
         },
         "offset": {
-          "oneOf": [
-            {
-              "type": "number"
-            },
-            {
-              "type": "array",
-              "items": {
-                "type": "number"
-              }
-            }
-          ]
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
         },
         "quantized_dtype" : {
           "type": "string"
