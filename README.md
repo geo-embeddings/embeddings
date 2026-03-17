@@ -25,11 +25,22 @@ It describes the produced embeddings and run metadata and does not redefine STAC
 - STAC Collection JSON Schema: <https://schemas.stacspec.org/v1.0.0/collection-spec/json-schema/collection.json>
 - STAC MLM Extension: <https://github.com/stac-extensions/mlm>
 - STAC Processing Extension: <https://github.com/stac-extensions/processing>
+- STAC Scientific Extension: <https://github.com/stac-extensions/scientific>
 - STAC Projection Extension: <https://github.com/stac-extensions/projection>
 
-## Reuse of Core STAC Elements
+## Reuse of Existing STAC Extensions
 
-This extension adds only `emb:*` fields and embedding-specific link relation types.
+This extension reuses fields from existing STAC extensions and common metadata where possible,
+adding only `emb:*` fields for concepts specific to embedding products:
+
+- **[Processing Extension](https://github.com/stac-extensions/processing):** `processing:datetime` and
+  `processing:version` are used for inference timestamp and source processing baseline.
+  `emb:preprocessing` and `emb:postprocessing` reference the Processing extension's Expression Object format.
+- **[Scientific Extension](https://github.com/stac-extensions/scientific):** `sci:publications` is used
+  for citing papers related to the embedding model or dataset.
+- **[STAC Common Metadata](https://github.com/radiantearth/stac-spec/blob/master/commons/common-metadata.md):**
+  `data_type` and `gsd` are used for embedding data type and spatial resolution.
+
 Core STAC elements such as Item/Collection structure, Link Object, Asset Object, Extent,
 and shared metadata (`description`, `license`, etc.) are validated by STAC core schemas
 and must not be redefined in this extension.
@@ -49,20 +60,21 @@ The extension fields can be used in:
 | --- | --- | --- |
 | emb:type | string enum | **REQUIRED**. Embedding type: `pixel` or `chip`. |
 | emb:dimensions | integer | **REQUIRED**. Number of embedding dimensions (for example, 64, 128, 768, 1024). |
-| emb:dtype | string | **REQUIRED**. Data type of stored embeddings (for example, `float32`, `int8`, `uint16`). |
-| emb:spatial_resolution | number | Ground sample distance or spatial extent per embedding, in meters. |
+| data_type | string | **REQUIRED**. Data type of stored embeddings (for example, `float32`, `int8`, `uint16`). Uses the [STAC Common Metadata `data_type`](https://github.com/radiantearth/stac-spec/blob/master/commons/common-metadata.md#data-types) values. |
+| gsd | number | Ground sample distance or spatial extent per embedding, in meters. Uses [STAC Common Metadata `gsd`](https://github.com/radiantearth/stac-spec/blob/master/commons/common-metadata.md#gsd). |
 | emb:chip_layout | [Chip Layout Object](#chip-layout-object) | Chip extraction layout for chip embeddings. |
 | emb:temporal_resolution | string | Temporal compositing window. |
 | emb:fit_for_use | \[string] | Intended use cases (for example, `classification`, `change_detection`, `retrieval`). |
 | emb:uncertainty | [Uncertainty Object](#uncertainty-object) | Optional uncertainty metadata. |
+| sci:publications | \[object] | Publications related to the embedding model or dataset. Uses the [Scientific Extension](https://github.com/stac-extensions/scientific). |
 
 ### Item Property Fields
 
 | Field Name | Type | Description |
 | --- | --- | --- |
 | emb:runtime_parameters | object | Runtime parameter values used during inference. |
-| emb:inference_datetime | string (date-time) | Timestamp when the embeddings were generated. |
-| emb:processing_baseline | string | Source processing baseline version. |
+| processing:datetime | string (date-time) | Timestamp when the embeddings were generated. Uses the [Processing Extension](https://github.com/stac-extensions/processing). |
+| processing:version | string | Source processing baseline version. Uses the [Processing Extension](https://github.com/stac-extensions/processing). |
 | emb:preprocessing | [Processing Expression](https://github.com/stac-extensions/processing) | Preprocessing applied to source data before inference. Uses the STAC Processing extension expression format. |
 | emb:postprocessing | [Processing Expression](https://github.com/stac-extensions/processing) | Postprocessing applied to raw model output. Uses the STAC Processing extension expression format. |
 | emb:uncertainty | [Uncertainty Object](#uncertainty-object) | Optional uncertainty metadata. |
@@ -94,7 +106,7 @@ No extension-specific fields are defined on assets.
 | Field Name | Type | Description |
 | --- | --- | --- |
 | method | string | **REQUIRED**. Quantization method. |
-| original_dtype | string | **REQUIRED**. Original data type before quantization. |
+| original_dtype | string | **REQUIRED**. Original data type before quantization. Uses the same [data type values](https://github.com/radiantearth/stac-spec/blob/master/commons/common-metadata.md#data-types) as `data_type`. |
 | scale | number or \[number] | Dequantization scale factor(s). |
 | offset | number or \[number] | Dequantization offset(s). |
 
@@ -104,7 +116,9 @@ No extension-specific fields are defined on assets.
 | --- | --- | --- |
 | method | string | How uncertainty is quantified. |
 | description | string | Human-readable uncertainty description. |
-| asset | Link Object | Link to companion uncertainty data asset. |
+
+Companion uncertainty data SHOULD be provided as a STAC Asset with the role `"uncertainty"`
+in the item's or collection's `assets` object, rather than embedded as a link in this object.
 
 ## Relation Types
 
@@ -115,8 +129,10 @@ The following relation types should be used as applicable `rel` values in STAC L
 | emb:model | Yes (Collection) | Link to the encoder model. If available, this should point to a STAC MLM Item. |
 | emb:source-data | Yes (Collection), No (Item) | Link to the source data collection (Collection) or specific source scene(s) (Item). |
 | emb:decoder | No | Link to a decoder model if one exists. |
-| emb:paper | No | Link to model or dataset paper. |
 | emb:benchmark | No | Link to benchmark/evaluation resources. |
+
+Paper and citation references SHOULD use the [Scientific Extension](https://github.com/stac-extensions/scientific)
+fields (`sci:doi`, `sci:citation`, `sci:publications`) instead of a custom link relation type.
 
 ## Contributing
 
