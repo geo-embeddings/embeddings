@@ -234,7 +234,11 @@
     "energy": {
       "type": "object",
       "properties": {
-        "gpu_energy_kwh": {
+        "device_type": {
+          "type": "string",
+          "enum": ["cpu", "gpu"]
+        },
+        "energy_kwh": {
           "type": "number",
           "minimum": 0
         },
@@ -242,15 +246,15 @@
           "type": "number",
           "minimum": 0
         },
-        "avg_gpu_power_w": {
+        "avg_power_w": {
           "type": "number",
           "minimum": 0
         },
-        "max_gpu_power_w": {
+        "max_power_w": {
           "type": "number",
           "minimum": 0
         },
-        "gpu_name": {
+        "name": {
           "type": "string"
         },
         "instance_type": {

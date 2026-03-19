@@ -63,13 +63,14 @@
       "expression": "l2_normalize"
     },
     "emb:energy": {
-      "gpu_energy_kwh": 0.0007124142254234144,
+      "device_type": "gpu",
+      "energy_kwh": 0.0007124142254234144,
       "inference_duration_s": 22.12,
-      "avg_gpu_power_w": 116,
-      "max_gpu_power_w": 131,
-      "gpu_name": "AMD Radeon Graphics",
-      "instance_type": null,
-      "platform": null
+      "avg_power_w": 116,
+      "max_power_w": 131,
+      "name": "NVIDIA T4",
+      "instance_type": "g4dn.xlarge",
+      "platform": "AWS"
     },
     "emb:quantization": {
       "method": "linear",

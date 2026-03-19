@@ -117,13 +117,14 @@ No extension-specific fields are defined on assets.
 
 | Field Name | Type | Description |
 | --- | --- | --- |
-| gpu_energy_kwh | number | Total GPU energy consumed during the inference run, in kilowatt-hours. |
+| device_type | string | Compute device used for inference. Must be `"cpu"` or `"gpu"`. |
+| energy_kwh | number | Total energy consumed by the compute device during the inference run, in kilowatt-hours. |
 | inference_duration_s | number | Wall-clock duration of the inference run, in seconds. |
-| avg_gpu_power_w | number | Average GPU power draw during inference, in watts. |
-| max_gpu_power_w | number | Peak GPU power draw during inference, in watts. |
-| gpu_name | string | Name of the GPU used for inference (for example, `NVIDIA A100`, `AMD Radeon Graphics`). |
+| avg_power_w | number | Average power draw of the compute device during inference, in watts. |
+| max_power_w | number | Peak power draw of the compute device during inference, in watts. |
+| name | string | Name of the compute device used for inference (for example, `NVIDIA A100`, `Intel Xeon 8375C`). |
 | instance_type | string\|null | Cloud instance type used for inference (for example, `p4d.24xlarge`, `a2-highgpu-1g`). |
-| platform | string\|null | Name of the compute platform (for example, `aws`, `gcp`, `azure`). |
+| platform | string\|null | Name of the compute platform (for example, `aws`, `gcp`, `azure`). Defaults to `"local"` when inference was not performed on a cloud platform. |
 
 ### Uncertainty Object
 
